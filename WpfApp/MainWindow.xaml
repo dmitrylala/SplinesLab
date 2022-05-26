@@ -15,7 +15,7 @@
                 <Border BorderBrush="Violet" BorderThickness="2">
                     <AdornedElementPlaceholder />
                 </Border>
-                <TextBlock Foreground="Red" FontSize="26" Height="30" FontWeight="Bold">!</TextBlock>
+                <TextBlock Foreground="Green" FontSize="26" Height="30" FontWeight="Bold">!</TextBlock>
             </StackPanel>
         </ControlTemplate>
         <local:DoubleStrConv x:Key="DoubleStrConv"/>
@@ -68,7 +68,7 @@
                 <TextBlock TextWrapping="Wrap" Text="Число узлов:" Width="130" Height="23" FontWeight="Bold" FontSize="16"/>
                 <TextBox Name="TextBox1" TextWrapping="Wrap" BorderBrush="Black"  Width="138" Height="30" FontSize="20" PreviewTextInput="TextBox1_PreviewTextInput"  Validation.ErrorTemplate="{StaticResource validationFailed}">
                     <TextBox.Text>
-                        <Binding Path="Splines.Data.NodesNumber" UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="Splines.Data.NumberNodes" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule />
                             </Binding.ValidationRules>
@@ -129,7 +129,7 @@
                 <TextBlock TextWrapping="Wrap" Text="Начало отрезка интегрирования:" Width="270" Height="30" FontWeight="Bold" FontSize="16"/>
                 <TextBox PreviewTextInput="TextBox2_PreviewTextInput" TextWrapping="Wrap" BorderBrush="Black"  Width="138" Height="30" FontSize="20" Validation.ErrorTemplate="{StaticResource validationFailed}">
                     <TextBox.Text>
-                        <Binding Path="Splines.Data.IntegralStart"  UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource DoubleStrConv}">
+                        <Binding Path="Splines.Parameters.IntegralStart"  UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource DoubleStrConv}">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule />
                             </Binding.ValidationRules>
@@ -143,7 +143,7 @@
                 <TextBlock TextWrapping="Wrap" Text="Конец отрезка интегрирования:" Width="270" Height="30" FontWeight="Bold" FontSize="16"/>
                 <TextBox  PreviewTextInput="TextBox2_PreviewTextInput" TextWrapping="Wrap" BorderBrush="Black"  Width="138" Height="30" FontSize="20" Validation.ErrorTemplate="{StaticResource validationFailed}">
                     <TextBox.Text>
-                        <Binding Path="Splines.Data.IntegralEnd"  UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource DoubleStrConv}">
+                        <Binding Path="Splines.Parameters.IntegralEnd"  UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource DoubleStrConv}">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule />
                             </Binding.ValidationRules>

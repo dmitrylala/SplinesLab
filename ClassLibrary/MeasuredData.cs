@@ -13,18 +13,57 @@ namespace ClassLibrary
 
     public class MeasuredData : IDataErrorInfo
     {
-        public int NodesNumber { get; set; } = 10;
+        public static readonly string NotEnoughNodesMessage = "Число точек должно быть больше 2";
+        public static readonly string IncorrectSegmentMessage = "Некорректный сегмент для " +
+            "неравномерной сетки";
+
+        public bool ErrorOccured => NotEnoughNodes || IncorrectSegment;
+        public bool NotEnoughNodes => NumberNodes <= 2;
+        public bool IncorrectSegment => Start >= End;
+
+
+        public string Error
+        {
+            get
+            {
+                if (NotEnoughNodes)
+                    return NotEnoughNodesMessage;
+
+                if (IncorrectSegment)
+                    return IncorrectSegmentMessage;
+
+                return "";
+            }
+        }
+
+        public string this[string columnName]
+        {
+            get
+            {
+                if ((columnName == "NumberNodes") && NotEnoughNodes)
+                    return NotEnoughNodesMessage;
+
+                if ((columnName == "Segment") && IncorrectSegment)
+                    return IncorrectSegmentMessage;
+
+                return "";
+            }
+        }
+
+        public bool HasInside(SplineParameters other) => (
+            (Start <= other.IntegralStart) && (other.IntegralEnd <= End)
+        );
+
+
+        public int NumberNodes { get; set; } = 10;
         public double Start { get; set; } = 0;
         public double End { get; set; } = 1;
         public SPf Function { get; set; } = SPf.Linear;
         public double[] Grid { get; set; }
         public double[] Values { get; set; }
-        public double IntegralStart { get; set; } = 0;
-        public double IntegralEnd { get; set; } = 1;
-
 
         public bool Changed { get; set; } = true;
-        public bool Err { get; set; } = false;
+
         public bool IsZeros
         {
             get
@@ -37,111 +76,76 @@ namespace ClassLibrary
 
         public MeasuredData()
         {
-            Grid = new double[NodesNumber]; 
-            Values = new double[NodesNumber]; 
+            Grid = new double[NumberNodes];
+            Values = new double[NumberNodes];
+            Clear();
         }
 
         public MeasuredData(int n_nodes, double start, double end, SPf function)
         {
-            NodesNumber = n_nodes;
-            Grid = new double[NodesNumber];
-            Values = new double[NodesNumber];
+            NumberNodes = n_nodes;
+            Grid = new double[NumberNodes];
+            Values = new double[NumberNodes];
+            Clear();
 
             Start = start; 
             End = end; 
             Function = function;
         }
 
-        public void RandomGrid()
+        public void Generate()
         {
-            Random rnd = new();
-
-            Grid = new double[NodesNumber];
-            Grid[0] = Start;
-            for (int i = 1; i < NodesNumber - 1; ++i)
-                Grid[i] = rnd.Next((int)Start, (int)End) + rnd.NextDouble();
-            Grid[NodesNumber - 1] = End;
-
-            Array.Sort(Grid);
-        }
-
-        public void SetGrid()
-        {
-            if (!Changed) 
+            if (!Changed)
                 return;
 
-            RandomGrid();
+            Random rnd = new();
 
-            Values = new double[NodesNumber];
+            Grid = new double[NumberNodes];
+            Grid[0] = Start;
+            for (int i = 1; i < NumberNodes - 1; ++i)
+                Grid[i] = rnd.Next((int)Start, (int)End) + rnd.NextDouble();
+            Grid[NumberNodes - 1] = End;
+
+            Array.Sort(Grid);
+
+            Values = new double[NumberNodes];
             switch (Function)
             {
                 case SPf.Random:
-                    Random rnd = new();
-                    for (int i = 0; i < NodesNumber; ++i) 
+                    for (int i = 0; i < NumberNodes; ++i) 
                         Values[i] = 13 * rnd.NextDouble();
                     break;
                 case SPf.Linear:
-                    for (int i = 0; i < NodesNumber; ++i) 
+                    for (int i = 0; i < NumberNodes; ++i) 
                         Values[i] = Grid[i];
                     break;
                 case SPf.Cubic:
-                    for (int i = 0; i < NodesNumber; ++i) 
+                    for (int i = 0; i < NumberNodes; ++i) 
                         Values[i] = Math.Pow(Grid[i], 3);
                     break;
             }
-            Changed = false; 
-            Err = (NodesNumber <= 2) || (Start >= End);
+            Changed = false;
         }
 
-        public bool SetErr()
+        public void Clear()
         {
-            bool not_enough_nodes = NodesNumber <= 2;
-            bool incorrect_segment = Start >= End;
-            bool incorrect_integral_segment = !(Start <= IntegralStart && IntegralStart < IntegralEnd && IntegralEnd <= End);
-            return Err = not_enough_nodes || incorrect_segment || incorrect_integral_segment;
+            Array.Clear(Grid, 0, NumberNodes);
+            Array.Clear(Values, 0, NumberNodes);
         }
 
         public ObservableCollection<string>? _str = new();
 
         public override string ToString()
         {
-            string res = $"[{Start}, {End}] count: {NodesNumber}\n";
-            for (int i = 0; i < NodesNumber - 1; i++)
+            string res = $"[{Start}, {End}] count: {NumberNodes}\n";
+            for (int i = 0; i < NumberNodes - 1; i++)
                 res += $"{Grid[i]}, ";
-            res += $"{Grid[NodesNumber - 1]}\n\n\n";
-            for (int i = 0; i < NodesNumber - 1; i++)
+            res += $"{Grid[NumberNodes - 1]}\n\n\n";
+            for (int i = 0; i < NumberNodes - 1; i++)
                 res += $"{Values[i]}, ";
-            res += $"{Values[NodesNumber - 1]}\n";
+            res += $"{Values[NumberNodes - 1]}\n";
             return res;
         }
-
-        public string this[string columnName]
-        {
-            get
-            {
-                string err = "";
-                switch (columnName)
-                {
-                    case "N":
-                        if (NodesNumber <= 2)
-                            err = "Число точек должно быть больше 2";
-                        break;
-                    case "Start": case "End":
-                        if (Start >= End || !(Start <= IntegralStart && IntegralStart < IntegralEnd && IntegralEnd <= End))
-                            err = "Правый конец меньше левого";
-                        break;
-                    case "Int_Start": case "Int_End":
-                        if (IntegralStart >= IntegralEnd || !(Start <= IntegralStart && IntegralStart < IntegralEnd && IntegralEnd <= End))
-                            err = "Неверный отрезок для интеграла";
-                        break;
-                    default:
-                        break;
-                }
-                return err;
-            }
-        }
-
-        public string Error => throw new NotImplementedException();
     }
 }
 

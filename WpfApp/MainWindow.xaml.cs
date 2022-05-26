@@ -7,7 +7,13 @@ namespace WpfApp
 {
     public partial class MainWindow : Window
     {
+        public class MessageBoxErrorReporter
+        {
+            public void ReportError(string message) => MessageBox.Show(message);
+        }
+
         public ViewData VData { get; set; } = new();
+        public MessageBoxErrorReporter Reporter { get; set; } = new();
 
         public MainWindow()
         {
@@ -21,7 +27,9 @@ namespace WpfApp
 
         private void TextBox(object sender, TextCompositionEventArgs e)
         {
-            VData.Changed = true;
+            double val;
+            if (!Double.TryParse(e.Text, out val))
+                e.Handled = true;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -31,7 +39,7 @@ namespace WpfApp
 
         private void MeasuredData_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = !VData.Splines.Data.SetErr() && !VData.Splines.Parameters.SetErr();
+            e.CanExecute = !VData.Splines.Data.ErrorOccured;
         }
 
         private void MeasuredData_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -39,12 +47,14 @@ namespace WpfApp
             VData.Splines.Data.Function = VData.SpfList.selectedFunc.Function;
             VData.Changed = true;
             VData.MdSetGrid();
-            VData.Chart.AddPlot(VData.Splines.Data.Grid, VData.Splines.Data.Values, 2, "Points");
+            VData.Chart.PlotPoints(VData.Splines.Data);
         }
 
         private void Splines_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = !VData.Splines.Data.SetErr() && !VData.Splines.Parameters.SetErr();
+            bool is_inside = VData.Splines.Data.HasInside(VData.Splines.Parameters);
+            bool is_zeros = VData.Splines.Data.IsZeros;
+            e.CanExecute = !VData.Splines.Parameters.ErrorOccured && is_inside && !is_zeros;
         }
 
         private void Splines_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -61,7 +71,7 @@ namespace WpfApp
             for (int i = 0; i < length; ++i)
                 grid[i] = VData.Splines.Data.Start + i * (VData.Splines.Data.End - VData.Splines.Data.Start) / (length - 1);
 
-            VData.Chart.AddPlot(grid, res, 1, "Spline");
+            VData.Chart.PlotSpline(grid, res);
         }
 
         private void TextBox1_PreviewTextInput(object sender, TextCompositionEventArgs e)

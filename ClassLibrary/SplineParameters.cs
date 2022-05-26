@@ -5,43 +5,47 @@ namespace ClassLibrary
 {
     public class SplineParameters : IDataErrorInfo
     {
-        public int NumberNodes { get; set; } = 10;
-        public double DerivativeLeft { get; set; }
-        public double DerivativeRight { get; set; }
-        public bool Err { get; set; }
+        private readonly string IncorrectIntegralSegmentMessage = "Некорректный сегмент для " +
+            "вычисления интеграла";
 
-        public SplineParameters()
-        {}
+        public bool ErrorOccured => NotEnoughNodes || IncorrectIntegralSegment;
+        public bool NotEnoughNodes => NumberNodes <= 2;
+        public bool IncorrectIntegralSegment => IntegralStart >= IntegralEnd;
 
-        public SplineParameters(double a, double b)
+
+        public string Error
         {
-            DerivativeLeft = a;
-            DerivativeRight = b;
-        }
+            get
+            {
+                if (NotEnoughNodes)
+                    return MeasuredData.NotEnoughNodesMessage;
 
-        public bool SetErr()
-        {
-            return Err = (NumberNodes <= 2);
+                if (IncorrectIntegralSegment)
+                    return IncorrectIntegralSegmentMessage;
+
+                return "";
+            }
         }
 
         public string this[string columnName]
         {
             get
             {
-                string err = "";
-                switch (columnName)
-                {
-                    case "N":
-                        if (NumberNodes <= 2)
-                            err = "Число точек должно быть больше 2";
-                        break;
-                    default:
-                        break;
-                }
-                return err;
+                if (columnName == "Nodes" && NotEnoughNodes)
+                    return MeasuredData.NotEnoughNodesMessage;
+
+                if (columnName == "IntegralSegment" && IncorrectIntegralSegment)
+                    return IncorrectIntegralSegmentMessage;
+
+                return "";
             }
         }
 
-        public string Error => throw new NotImplementedException();
+        public int NumberNodes { get; set; } = 10;
+        public double DerivativeLeft { get; set; } = 0;
+        public double DerivativeRight { get; set; } = 0;
+
+        public double IntegralStart { get; set; } = 0;
+        public double IntegralEnd { get; set; } = 1;
     }
 }

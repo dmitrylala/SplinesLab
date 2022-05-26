@@ -24,8 +24,17 @@ namespace ClassLibrary
             Parameters = new();
         }
 
-        [DllImport("\\..\\..\\..\\..\\x64\\Debug\\Splines.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern double Interpolate(int length, double[] points, double[] func, double[] res, double[] der, int gridlen, double[] grid, double[] limits, double[] integrals);
+        [DllImport(
+            "\\..\\..\\..\\..\\x64\\Debug\\Splines.dll", 
+            CallingConvention = CallingConvention.Cdecl)
+        ]
+        public static extern double Interpolate(
+            int length, double[] points, 
+            double[] func, double[] res, 
+            double[] der, int gridlen, 
+            double[] grid, double[] limits, 
+            double[] integrals
+        );
 
 
         public double[] Spline(ref double a, ref double[] Int) 
@@ -33,11 +42,11 @@ namespace ClassLibrary
             double[] spline = new double[3 * Parameters.NumberNodes];
 
             a = Interpolate(
-                Data.NodesNumber, Data.Grid, Data.Values,
+                Data.NumberNodes, Data.Grid, Data.Values,
                 spline, 
                 new double[] { Parameters.DerivativeLeft, Parameters.DerivativeRight },
                 Parameters.NumberNodes, new double[] { Data.Start, Data.End }, 
-                new double[] { Data.IntegralStart, Data.IntegralEnd }, Int
+                new double[] { Parameters.IntegralStart, Parameters.IntegralEnd }, Int
             );
 
             Integral = Int[0];
@@ -52,7 +61,7 @@ namespace ClassLibrary
             {
                 if (Integral == null || DerivativeLeft == null || DerivativeRight == null)
                     return "Интеграл не посчитан";
-                string res = $"Интеграл посчитан на отрезке [{Data.IntegralStart}; {Data.IntegralEnd}]\n";
+                string res = $"Интеграл посчитан на отрезке [{Parameters.IntegralStart}; {Parameters.IntegralEnd}]\n";
                 res += $"Значение: {Integral}\n";
                 res += $"Производные на границах:\n\tСлева {DerivativeLeft}\n\tСправа {DerivativeRight}";
                 return res;
@@ -66,7 +75,7 @@ namespace ClassLibrary
                 if (!Data.IsZeros)
                 {
                     Data._str = new();
-                    for (int i = 0; i < Data.NodesNumber; i++)
+                    for (int i = 0; i < Data.NumberNodes; i++)
                         Data._str.Add($"x[{i + 1}]: {Data.Grid[i]:f8}\t\ty[{i + 1}]: {Data.Values[i]:f8}");
                     return Data._str;
                 }
@@ -76,6 +85,14 @@ namespace ClassLibrary
             {
                 Data._str = value;
             }
+        }
+
+        public void Clear()
+        {
+            Integral = null;
+            DerivativeLeft = null;
+            DerivativeRight = null;
+            Data.Clear();
         }
     }
 }
