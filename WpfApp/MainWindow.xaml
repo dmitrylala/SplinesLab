@@ -15,7 +15,8 @@
                 <Border BorderBrush="Violet" BorderThickness="2">
                     <AdornedElementPlaceholder />
                 </Border>
-                <TextBlock Foreground="Green" FontSize="26" Height="30" FontWeight="Bold">!</TextBlock>
+                <TextBlock Foreground="Green" FontSize="26" Height="30" 
+                           FontWeight="Bold">!</TextBlock>
             </StackPanel>
         </ControlTemplate>
         <local:DoubleStrConv x:Key="DoubleStrConv"/>
@@ -23,8 +24,10 @@
 
     <!-- Bindings -->
     <Window.CommandBindings>
-        <CommandBinding Command="local:Cmd.MeasuredData" CanExecute="MeasuredData_CanExecute" Executed="MeasuredData_Executed"/>
-        <CommandBinding Command="local:Cmd.Splines" CanExecute="Splines_CanExecute" Executed="Splines_Executed" />
+        <CommandBinding Command="local:Cmd.MeasuredData" CanExecute="MeasuredData_CanExecute" 
+                        Executed="MeasuredData_Executed"/>
+        <CommandBinding Command="local:Cmd.Splines" CanExecute="Splines_CanExecute" 
+                        Executed="Splines_Executed" />
     </Window.CommandBindings>
 
     <!-- Elements grid -->
@@ -60,15 +63,22 @@
         </Menu>
 
         <!-- Non-uniform grid -->
-        <StackPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" Height="120" Margin="10,0,0,25">
+        <StackPanel Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" Height="120" 
+                    Margin="10,0,0,25">
 
             <!-- Number of nodes -->
-            <TextBlock Grid.Column="2" HorizontalAlignment="Left" Grid.Row="1" TextWrapping="Wrap" Text="Неравномерная сетка:" VerticalAlignment="Top" Width="187" Height="30" FontWeight="Bold" FontSize="16"/>
+            <TextBlock Grid.Column="2" HorizontalAlignment="Left" Grid.Row="1" TextWrapping="Wrap" 
+                       Text="Неравномерная сетка:" VerticalAlignment="Top" Width="187" Height="30" 
+                       FontWeight="Bold" FontSize="16"/>
             <StackPanel Height="30" Orientation="Horizontal">
-                <TextBlock TextWrapping="Wrap" Text="Число узлов:" Width="130" Height="23" FontWeight="Bold" FontSize="16"/>
-                <TextBox Name="TextBox1" TextWrapping="Wrap" BorderBrush="Black"  Width="138" Height="30" FontSize="20" PreviewTextInput="TextBox1_PreviewTextInput"  Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <TextBlock TextWrapping="Wrap" Text="Число узлов:" Width="130" Height="23" 
+                           FontWeight="Bold" FontSize="16"/>
+                <TextBox Name="TextBox1" TextWrapping="Wrap" BorderBrush="Black"  Width="138" 
+                         Height="30" FontSize="20" PreviewTextInput="TextBox1_PreviewTextInput" 
+                         Validation.ErrorTemplate="{StaticResource validationFailed}">
                     <TextBox.Text>
-                        <Binding Path="Splines.Data.NumberNodes" UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="Splines.Data.NumberNodes" 
+                                 UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule />
                             </Binding.ValidationRules>
@@ -79,10 +89,15 @@
 
             <!-- Segment start -->
             <StackPanel Height="30" Orientation="Horizontal">
-                <TextBlock TextWrapping="Wrap" Text="Начало отрезка:" Width="130" Height="30" FontWeight="Bold" FontSize="16"/>
-                <TextBox Name="TextBox2" TextWrapping="Wrap" BorderBrush="Black"  Width="138" Height="30" FontSize="20" PreviewTextInput="TextBox2_PreviewTextInput" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <TextBlock TextWrapping="Wrap" Text="Начало отрезка:" Width="130" Height="30" 
+                           FontWeight="Bold" FontSize="16"/>
+                <TextBox Name="TextBox2" TextWrapping="Wrap" BorderBrush="Black" Width="138" 
+                         Height="30" FontSize="20" PreviewTextInput="TextBox2_PreviewTextInput"
+                         Validation.ErrorTemplate="{StaticResource validationFailed}">
                     <TextBox.Text>
-                        <Binding Path="Splines.Data.Start" UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource DoubleStrConv}">
+                        <Binding Path="Splines.Data.Start"
+                                 UpdateSourceTrigger="PropertyChanged" 
+                                 Converter="{StaticResource DoubleStrConv}">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule />
                             </Binding.ValidationRules>
@@ -93,10 +108,15 @@
 
             <!-- Segment end -->
             <StackPanel Height="30" Orientation="Horizontal">
-                <TextBlock TextWrapping="Wrap" Text="Конец отрезка:" Width="130" Height="30" FontWeight="Bold" FontSize="16"/>
-                <TextBox Name="TextBox3" TextWrapping="Wrap" BorderBrush="Black"  Width="138" Height="30" FontSize="20" PreviewTextInput="TextBox2_PreviewTextInput" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <TextBlock TextWrapping="Wrap" Text="Конец отрезка:" Width="130" Height="30" 
+                           FontWeight="Bold" FontSize="16"/>
+                <TextBox Name="TextBox3" TextWrapping="Wrap" BorderBrush="Black"  Width="138"
+                         Height="30" FontSize="20" PreviewTextInput="TextBox2_PreviewTextInput" 
+                         Validation.ErrorTemplate="{StaticResource validationFailed}">
                     <TextBox.Text>
-                        <Binding Path="Splines.Data.End" UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource DoubleStrConv}">
+                        <Binding Path="Splines.Data.End" 
+                                 UpdateSourceTrigger="PropertyChanged" 
+                                 Converter="{StaticResource DoubleStrConv}">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule />
                             </Binding.ValidationRules>
@@ -126,10 +146,15 @@
 
             <!-- Integration segment start -->
             <StackPanel Height="30" Orientation="Horizontal">
-                <TextBlock TextWrapping="Wrap" Text="Начало отрезка интегрирования:" Width="270" Height="30" FontWeight="Bold" FontSize="16"/>
-                <TextBox PreviewTextInput="TextBox2_PreviewTextInput" TextWrapping="Wrap" BorderBrush="Black"  Width="138" Height="30" FontSize="20" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <TextBlock TextWrapping="Wrap" Text="Начало отрезка интегрирования:" Width="270" 
+                           Height="30" FontWeight="Bold" FontSize="16"/>
+                <TextBox PreviewTextInput="TextBox2_PreviewTextInput" TextWrapping="Wrap" 
+                         BorderBrush="Black"  Width="138" Height="30" FontSize="20" 
+                         Validation.ErrorTemplate="{StaticResource validationFailed}">
                     <TextBox.Text>
-                        <Binding Path="Splines.Parameters.IntegralStart"  UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource DoubleStrConv}">
+                        <Binding Path="Splines.Parameters.IntegralStart" 
+                                 UpdateSourceTrigger="PropertyChanged" 
+                                 Converter="{StaticResource DoubleStrConv}">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule />
                             </Binding.ValidationRules>
@@ -140,10 +165,15 @@
 
             <!-- Integration segment end -->
             <StackPanel Height="30" Orientation="Horizontal">
-                <TextBlock TextWrapping="Wrap" Text="Конец отрезка интегрирования:" Width="270" Height="30" FontWeight="Bold" FontSize="16"/>
-                <TextBox  PreviewTextInput="TextBox2_PreviewTextInput" TextWrapping="Wrap" BorderBrush="Black"  Width="138" Height="30" FontSize="20" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <TextBlock TextWrapping="Wrap" Text="Конец отрезка интегрирования:" Width="270" 
+                           Height="30" FontWeight="Bold" FontSize="16"/>
+                <TextBox  PreviewTextInput="TextBox2_PreviewTextInput" TextWrapping="Wrap" 
+                          BorderBrush="Black"  Width="138" Height="30" FontSize="20" 
+                          Validation.ErrorTemplate="{StaticResource validationFailed}">
                     <TextBox.Text>
-                        <Binding Path="Splines.Parameters.IntegralEnd"  UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource DoubleStrConv}">
+                        <Binding Path="Splines.Parameters.IntegralEnd" 
+                                 UpdateSourceTrigger="PropertyChanged" 
+                                 Converter="{StaticResource DoubleStrConv}">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule />
                             </Binding.ValidationRules>
@@ -154,20 +184,29 @@
 
             <!-- Left derivative -->
             <StackPanel Height="30" Orientation="Horizontal">
-                <TextBlock TextWrapping="Wrap" Text="Производная слева:" Width="270" Height="60" FontWeight="Bold" FontSize="16"/>
-                <TextBox PreviewTextInput="TextBox" TextWrapping="Wrap" Text="{Binding Splines.Parameters.DerivativeLeft, UpdateSourceTrigger=PropertyChanged}"  BorderBrush="Black"  Width="138" Height="30" FontSize="20"/>
+                <TextBlock TextWrapping="Wrap" Text="Производная слева:" Width="270" Height="60" 
+                           FontWeight="Bold" FontSize="16"/>
+                <TextBox PreviewTextInput="TextBox" TextWrapping="Wrap" 
+                         Text="{Binding Splines.Parameters.DerivativeLeft, 
+                         UpdateSourceTrigger=PropertyChanged}" 
+                         BorderBrush="Black"  Width="138" Height="30" FontSize="20"/>
             </StackPanel>
 
             <!-- Right derivative -->
             <StackPanel Height="30" Orientation="Horizontal">
-                <TextBlock TextWrapping="Wrap" Text="Производная справа:" Width="270" Height="30" FontWeight="Bold" FontSize="16"/>
-                <TextBox  PreviewTextInput="TextBox" TextWrapping="Wrap" Text="{Binding Splines.Parameters.DerivativeRight, UpdateSourceTrigger=PropertyChanged}" BorderBrush="Black"  Width="138" Height="30" FontSize="20"/>
+                <TextBlock TextWrapping="Wrap" Text="Производная справа:" Width="270" Height="30" 
+                           FontWeight="Bold" FontSize="16"/>
+                <TextBox  PreviewTextInput="TextBox" TextWrapping="Wrap" 
+                          Text="{Binding Splines.Parameters.DerivativeRight,
+                          UpdateSourceTrigger=PropertyChanged}" BorderBrush="Black" 
+                          Width="138" Height="30" FontSize="20"/>
             </StackPanel>
         </StackPanel>
 
         
         <!-- Charts -->
-        <lvc:CartesianChart LegendLocation="Right" Grid.Column="0" Margin="10,30,10,10" Grid.Row="0" Series="{Binding Chart.Data}" Grid.ColumnSpan="2" Grid.RowSpan="2">
+        <lvc:CartesianChart LegendLocation="Right" Grid.Column="0" Margin="10,30,10,10" Grid.Row="0" 
+                            Series="{Binding Chart.Data}" Grid.ColumnSpan="2" Grid.RowSpan="2">
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Title="Values" LabelFormatter="{Binding Chart.Form}"></lvc:Axis>
             </lvc:CartesianChart.AxisY>
@@ -177,9 +216,14 @@
         </lvc:CartesianChart>
 
 
-        <Button Grid.Column="2" Content="Clear" HorizontalAlignment="Left" Margin="330,79,0,0" Grid.Row="1" VerticalAlignment="Top" Click="Button_Click"/>
-        <TextBlock Grid.Column="2" Margin="110,20,0,0" HorizontalAlignment="Left" Grid.Row="0" TextWrapping="Wrap" Text="Неравномерная сетка" VerticalAlignment="Top" Width="187" Height="23" FontWeight="Bold" FontSize="16"/>
-        <ListBox Grid.Row="0" Grid.Column="2" Margin="60,50,60,30" ItemsSource="{Binding Splines.Str}"/>
-        <TextBlock HorizontalAlignment="Center" Grid.Row="2" TextWrapping="Wrap" Text="{Binding Splines.IntegralInfo}"  VerticalAlignment="Center" Grid.ColumnSpan="2" FontWeight="Bold" FontSize="16"/>
+        <Button Grid.Column="2" Content="Clear" HorizontalAlignment="Left" Margin="330,79,0,0" 
+                Grid.Row="1" VerticalAlignment="Top" Click="Button_Click"/>
+        <TextBlock Grid.Column="2" Margin="110,20,0,0" HorizontalAlignment="Left" Grid.Row="0" 
+                   TextWrapping="Wrap" Text="Неравномерная сетка" VerticalAlignment="Top" Width="187" Height="23" FontWeight="Bold" FontSize="16"/>
+        <ListBox Grid.Row="0" Grid.Column="2" Margin="60,50,60,30" 
+                 ItemsSource="{Binding Splines.Str}"/>
+        <TextBlock HorizontalAlignment="Center" Grid.Row="2" TextWrapping="Wrap" 
+                   Text="{Binding Splines.IntegralInfo}" VerticalAlignment="Center" 
+                   Grid.ColumnSpan="2" FontWeight="Bold" FontSize="16"/>
     </Grid>
 </Window>
