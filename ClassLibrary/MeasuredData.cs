@@ -58,7 +58,7 @@ namespace ClassLibrary
         public int NumberNodes { get; set; } = 10;
         public double Start { get; set; } = 0;
         public double End { get; set; } = 1;
-        public SPf Function { get; set; } = SPf.Linear;
+        public SPf Function { get; set; } = SPf.Random;
         public double[] Grid { get; set; }
         public double[] Values { get; set; }
 
