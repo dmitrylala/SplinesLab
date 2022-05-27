@@ -19,6 +19,8 @@
                            FontWeight="Bold">!</TextBlock>
             </StackPanel>
         </ControlTemplate>
+        
+        <!-- Converter -->
         <local:DoubleStrConv x:Key="DoubleStrConv"/>
     </Window.Resources>
 
